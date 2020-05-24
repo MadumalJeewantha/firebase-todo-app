@@ -1,0 +1,1 @@
+Basic ToDo app using firebase-firestore with firebase authentication enabled

@@ -1,0 +1,10 @@
+{
+  "hosting": {
+    "public": "./ToDo App",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}

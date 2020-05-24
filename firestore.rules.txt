@@ -1,0 +1,34 @@
+// user who is signed in only has read and write access to their 
+// specific list of to-do items.
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /to-do-lists/{listUID}/{document=**}{
+     allow read, write: if request.auth.uid == listUID
+    }
+  }
+}
+
+
+// --------------------------------------------------------------------
+Let’s Break This Down #
+Match the Database #
+Where you see the match /databases/{database}/documents {} is the starting point for any rule you 
+want to add. You can add as many rules as you want between the {}.
+
+Match the List #
+Inside that you see match /to-do-lists/{listUID}/{document=**}{} where inside the {} is where we 
+will define access levels for lists.
+
+Now check out the {listUID}. This is a wild card basically saying give us access to any list no 
+matter what the ID. If you wanted to give access to a specific list, you could put an actual ID 
+there like this {WMPlOss0AxQr3xLspfQPJFXqwwu2}.
+
+Define Who Can do What #
+At the inner part of the code, you see allow read, write: if request.auth.uid == listUID, 
+meaning that if your UID matches the list ID, then you can read, and write to that list. 
+The list ID will match up with a user because we made the list ID the UID of the signed-in user 
+for this very purpose. Remember the query that looks like this when we add a to-do item database.
+collection('to-do-lists').doc(uid).collection('my-list').add({}). You can see that we name the doc 
+after the signed-in users UID by doing this .doc(uid). This is how the magic happens!
